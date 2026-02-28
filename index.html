@@ -273,7 +273,6 @@
         referrerpolicy="no-referrer-when-downgrade">
     </iframe>
 </div>
-
     <footer>
         <div class="social-links">
             <a href="#" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
@@ -294,131 +293,150 @@
         </div>
     </footer>
 
-
     <div id="zoomModal" onclick="this.style.display='none'"><img id="zoomImg" style="max-width:100%; max-height:90vh; border-radius:8px; object-fit:contain;"></div>
 
-<script>
-    const CONFIG = { API_URL: "https://sheetdb.io/api/v1/30v4p21ubzasr", WA_PHONE: "6285725493220" };
-    let rawData = [];
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
+    <script>
+        const CONFIG = { 
+            CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR16ekuPAixQ-UIzuSCKrpqNHAyb87UWDIFgTTVgYx97WoiQGtvRbtr1GBBABFk_wwo0VW17dGSC4K6/pub?output=csv", 
+            WA_PHONE: "6285725493220" 
+        };
+
+        let rawData = [];
 
         function updateRealTimeInfo() {
-        const now = new Date();
-        const day = now.getDay(); // 0 = Minggu, 1 = Senin, ..., 6 = Sabtu
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const currentTime = hours + (minutes / 60); // Konversi jam ke desimal untuk pengecekan mudah
+            const now = new Date();
+            const day = now.getDay(); 
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hours + (minutes / 60);
 
-        let isOpen = false;
+            let isOpen = false;
+            if (day >= 1 && day <= 5) { 
+                if (currentTime >= 8 && currentTime < 17) isOpen = true;
+            } else if (day === 6) {
+                if (currentTime >= 9 && currentTime < 17) isOpen = true;
+            } 
 
-        // Logika Jam Operasional Baru:
-        if (day >= 1 && day <= 5) { 
-            // Senin - Jumat: 08.00 - 17.00
-            if (currentTime >= 8 && currentTime < 17) isOpen = true;
-        } else if (day === 6) {
-            // Sabtu: 09.00 - 17.00
-            if (currentTime >= 9 && currentTime < 17) isOpen = true;
-        } 
-        // Minggu (day === 0) otomatis isOpen = false karena tidak masuk kondisi di atas
+            const dateEl = document.getElementById('top-date');
+            const clockEl = document.getElementById('top-clock');
+            const statusEl = document.getElementById('top-status-badge');
 
-        document.getElementById('top-date').innerText = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        document.getElementById('top-clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
-        
-        document.getElementById('top-status-badge').innerHTML = isOpen ? 
-            `<span class="dot-status dot-open"></span> BUKA` : `<span class="dot-status dot-closed"></span> TUTUP`;
-    }
+            if(dateEl) dateEl.innerText = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            if(clockEl) clockEl.innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+            if(statusEl) statusEl.innerHTML = isOpen ? 
+                `<span class="dot-status dot-open"></span> BUKA` : `<span class="dot-status dot-closed"></span> TUTUP`;
+        }
 
+        function syncDots(scrollId, dotsId) {
+            const scroll = document.getElementById(scrollId);
+            const dots = document.getElementById(dotsId)?.children;
+            if(!scroll || !dots) return;
+            const idx = Math.round(scroll.scrollLeft / scroll.offsetWidth);
+            for(let i=0; i<dots.length; i++) if(dots[i]) dots[i].classList.toggle('active', i === idx);
+        }
 
-    function syncDots(scrollId, dotsId) {
-        const scroll = document.getElementById(scrollId);
-        const dots = document.getElementById(dotsId)?.children;
-        if(!scroll || !dots) return;
-        const idx = Math.round(scroll.scrollLeft / scroll.offsetWidth);
-        for(let i=0; i<dots.length; i++) if(dots[i]) dots[i].classList.toggle('active', i === idx);
-    }
+        function startAutoSlide(scrollId, interval) {
+            const scroll = document.getElementById(scrollId);
+            if(!scroll) return;
+            setInterval(() => {
+                const total = scroll.children.length;
+                if(total <= 1) return;
+                const current = Math.round(scroll.scrollLeft / scroll.offsetWidth);
+                const next = (current + 1) % total;
+                scroll.scrollTo({ left: next * scroll.offsetWidth, behavior: 'smooth' });
+            }, interval);
+        }
 
-    function startAutoSlide(scrollId, interval) {
-        const scroll = document.getElementById(scrollId);
-        if(!scroll) return;
-        setInterval(() => {
-            const total = scroll.children.length;
-            const current = Math.round(scroll.scrollLeft / scroll.offsetWidth);
-            const next = (current + 1) % total;
-            scroll.scrollTo({ left: next * scroll.offsetWidth, behavior: 'smooth' });
-        }, interval);
-    }
+        async function fetchMaster() {
+            try {
+                const response = await fetch(CONFIG.CSV_URL);
+                const csvString = await response.text();
+                
+                Papa.parse(csvString, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        rawData = results.data;
+                        document.getElementById('loading').style.display = 'none';
+                        renderMaster('promo');
+                        startAutoSlide('promoScroll', 5000);
+                        startAutoSlide('videoScroll', 8000);
+                        startAutoSlide('aboutScroll', 7000);
+                    }
+                });
+            } catch (e) { 
+                document.getElementById('loading').innerHTML = "Gagal memuat data motor."; 
+            }
+        }
 
-    async function fetchMaster() {
-        try {
-            const res = await fetch(CONFIG.API_URL);
-            rawData = await res.json();
-            document.getElementById('loading').style.display = 'none';
-            renderMaster('promo');
-            startAutoSlide('promoScroll', 5000);
-            startAutoSlide('videoScroll', 8000);
-            startAutoSlide('aboutScroll', 7000);
-        } catch (e) { document.getElementById('loading').innerText = "Gagal memuat data."; }
-    }
+        function renderMaster(filter = 'promo', query = '') {
+            const container = document.getElementById('mainContainer');
+            if(!container) return;
+            container.innerHTML = "";
+            
+            const data = rawData.filter(m => {
+                if (query !== "") return m.nama?.toLowerCase().includes(query.toLowerCase());
+                if (filter === 'promo') return m.promo && m.promo.trim() !== "";
+                return m.cat?.toLowerCase().includes(filter.toLowerCase());
+            });
 
-    function renderMaster(filter = 'promo', query = '') {
-        const container = document.getElementById('mainContainer');
-        container.innerHTML = "";
-        const data = rawData.filter(m => {
-            if (query !== "") return m.nama?.toLowerCase().includes(query.toLowerCase());
-            if (filter === 'promo') return m.promo && m.promo.trim() !== "";
-            return m.cat?.toLowerCase().includes(filter.toLowerCase());
-        });
+            data.forEach((m, idx) => {
+                const imgs = [m.img, m.img1, m.img2, m.img3, m.img4, m.img5].filter(p => p && p.trim() !== "");
+                const status = m.stock?.toLowerCase().trim();
+                const badgeClass = status === 'ready' ? 'stok-ready' : (status === 'inden' ? 'stok-inden' : 'stok-kosong');
+                const promoTag = (m.promo && m.promo.trim() !== "") ? `<div class="promo-badge"><i class="fas fa-fire"></i> ${m.promo}</div>` : "";
 
-        data.forEach((m, idx) => {
-            const imgs = [m.img, m.img1, m.img2, m.img3, m.img4, m.img5].filter(p => p && p.trim() !== "");
-            const status = m.stock?.toLowerCase().trim();
-            const badgeClass = status === 'ready' ? 'stok-ready' : (status === 'inden' ? 'stok-inden' : 'stok-kosong');
-            const promoTag = (m.promo && m.promo.trim() !== "") ? `<div class="promo-badge"><i class="fas fa-fire"></i> ${m.promo}</div>` : "";
-
-            container.innerHTML += `
-            <div class="card">
-                <div class="gallery">
-                    ${promoTag}
-                    <div class="img-counter" id="counter-${idx}">1 / ${imgs.length}</div>
-                    <div class="gallery-scroll" onscroll="syncDots('gallery-scroll', 'counter-${idx}')">
-                        ${imgs.map(p => `<div class="slide"><img src="${p}" onclick="openZoom(this.src)"></div>`).join('')}
-                    </div>
-                </div>
-                <div class="card-info">
-                    <div class="stok-badge ${badgeClass}">${m.stock || 'Cek Stok'}</div>
-                    <h3 class="motor-name">${m.nama}</h3>
-                    <span class="new-price">${m.harga ? "Rp " + parseInt(m.harga.replace(/[^0-9]/g, "")).toLocaleString('id-ID') : '-'}</span>
-                    <span style="background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">
-    TYPE: ${m.type || '-'}
-</span>
-
-                    <details>
-                        <summary>Spesifikasi Produk</summary>
-                        <div class="spec-container">
-                            <div class="spec-item"><span class="spec-label">Mesin</span><span>:</span><span>${m.mesin || '-'}</span></div>
-                            <div class="spec-item"><span class="spec-label">Rangka</span><span>:</span><span>${m.rangka || '-'}</span></div>
-                            <div class="spec-item"><span class="spec-label">Dimensi</span><span>:</span><span>${m.dimensi || '-'}</span></div>
-                            <div class="spec-item"><span class="spec-label">Kelistrikan</span><span>:</span><span>${m.kelistrikan || '-'}</span></div>
+                container.innerHTML += `
+                <div class="card">
+                    <div class="gallery">
+                        ${promoTag}
+                        <div class="img-counter" id="counter-${idx}">1 / ${imgs.length}</div>
+                        <div class="gallery-scroll" onscroll="const idxG = Math.round(this.scrollLeft / this.offsetWidth); document.getElementById('counter-${idx}').innerText = (idxG+1) + ' / ${imgs.length}';">
+                            ${imgs.map(p => `<div class="slide"><img src="${p}" onclick="openZoom(this.src)"></div>`).join('')}
                         </div>
-                    </details>
-                    <a href="https://wa.me/${CONFIG.WA_PHONE}?text=Halo Sales Maju Jaya Abadi, saya ingin tanya unit ${m.nama}" class="wa-btn" target="_blank">
-                        <i class="fab fa-whatsapp"></i> TANYA SALES
-                    </a>
-                </div>
-            </div>`;
-        });
-    }
+                    </div>
+                    <div class="card-info">
+                        <div class="stok-badge ${badgeClass}">${m.stock || 'Cek Stok'}</div>
+                        <h3 class="motor-name">${m.nama}</h3>
+                        <span class="new-price">${m.harga ? "Rp " + parseInt(m.harga.replace(/[^0-9]/g, "")).toLocaleString('id-ID') : '-'}</span>
+                        <span style="background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">
+                            TYPE: ${m.type || '-'}
+                        </span>
+                        <details>
+                            <summary>Spesifikasi Produk</summary>
+                            <div class="spec-container">
+                                <div class="spec-item"><span class="spec-label">Mesin</span><span>:</span><span>${m.mesin || '-'}</span></div>
+                                <div class="spec-item"><span class="spec-label">Rangka</span><span>:</span><span>${m.rangka || '-'}</span></div>
+                                <div class="spec-item"><span class="spec-label">Dimensi</span><span>:</span><span>${m.dimensi || '-'}</span></div>
+                                <div class="spec-item"><span class="spec-label">Kelistrikan</span><span>:</span><span>${m.kelistrikan || '-'}</span></div>
+                            </div>
+                        </details>
+                        <a href="https://wa.me/${CONFIG.WA_PHONE}?text=Halo Sales Maju Jaya Abadi, saya ingin tanya unit ${m.nama}" class="wa-btn" target="_blank">
+                            <i class="fab fa-whatsapp"></i> TANYA SALES
+                        </a>
+                    </div>
+                </div>`;
+            });
+        }
 
-    function openZoom(src) { document.getElementById('zoomImg').src = src; document.getElementById('zoomModal').style.display = 'flex'; }
-    const doSearch = () => renderMaster('promo', document.getElementById('mainSearch').value);
-    const doFilter = (c, b) => {
-        document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
-        b.classList.add('active');
-        renderMaster(c);
-    };
+        function openZoom(src) { 
+            document.getElementById('zoomImg').src = src; 
+            document.getElementById('zoomModal').style.display = 'flex'; 
+        }
 
-    updateRealTimeInfo();
-    setInterval(updateRealTimeInfo, 1000);
-    fetchMaster();
-</script>
+        const doSearch = () => renderMaster('promo', document.getElementById('mainSearch').value);
+
+        const doFilter = (c, b) => {
+            document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            renderMaster(c);
+        };
+
+        updateRealTimeInfo();
+        setInterval(updateRealTimeInfo, 1000);
+        fetchMaster();
+    </script>
 </body>
 </html>
