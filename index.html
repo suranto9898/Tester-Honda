@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>honda Maju Jaya Abadi | Official Katalog Ngawi</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+          :root {
+            /* WARNA UTAMA: Official Honda Red */
+            --honda-red: #cc0000; 
+            
+            /* WARNA AKSEN: Hitam Carbon & Abu-abu Premium */
+            --dark-steel: #111111; 
+            --slate-gray: #4b5563; 
+            
+            /* BACKGROUND & KARTU */
+            --bg-light: #f3f4f6; 
+            --white: #ffffff; 
+            
+            /* INDIKATOR STATUS */
+            --status-ok: #22c55e; 
+            
+            /* STATUS STOK (READY, INDEN, KOSONG) */
+            --ready-bg: #dcfce7; --ready-text: #166534;
+            --inden-bg: #fef9c3; --inden-text: #854d0e;
+            --kosong-bg: #fee2e2; --kosong-text: #991b1b;
+        }
+
+
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-light); color: var(--dark-steel); line-height: 1.6; overflow-x: hidden; }
+
+        /* MAPS */
+        .map-container { width: 100%; padding: 0 6% 30px; background: var(--bg-light); }
+        .map-wrapper { width: 100%; height: 300px; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .map-wrapper iframe { width: 100%; height: 100%; border: 0; }
+
+/* Kontainer teks berjalan */
+.running-text-container {
+    background: #000; /* Warna hitam elegan */
+    color: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px 0;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--honda-red);
+}
+
+/* Animasi jalannya */
+.running-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 15s linear infinite;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@keyframes marquee {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+
+        /* TOP INFO BAR */
+        .top-info-bar { background: #000; color: white; padding: 10px 6%; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 500; position: sticky; top: 0; z-index: 1100; }
+        .dot-status { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .dot-open { background: var(--status-ok); box-shadow: 0 0 10px var(--status-ok); animation: blink 1.5s infinite; }
+        .dot-closed { background: var(--honda-red); }
+
+        /* NAVBAR */
+        .navbar { background: var(--white); padding: 15px 6%; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid #e2e8f0; position: sticky; top: 35px; z-index: 1000; }
+        .logo-img { height: 35px; margin-bottom: 5px; object-fit: contain; }
+        .brand-name { font-size: 14px; font-weight: 800; color: var(--honda-red); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* HERO */
+        .hero { background: var(--honda-red); color: var(--white); padding: 50px 8% 30px; text-align: center; }
+        .hero h1 { font-size: 26px; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
+        .dealer-name-animate { display: inline-block; background: linear-gradient(90deg, #fff, #93c5fd, #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
+
+        /* BADGES */
+        .stok-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
+        .stok-ready { background: var(--ready-bg); color: var(--ready-text); }
+        .stok-inden { background: var(--inden-bg); color: var(--inden-text); }
+        .stok-kosong { background: var(--kosong-bg); color: var(--kosong-text); }
+        .promo-badge { position: absolute; bottom: 12px; left: 12px; background: linear-gradient(45deg, var(--honda-red), #ff4d4d); color: white; padding: 5px 12px; border-radius: 6px; font-size: 10px; font-weight: 800; z-index: 20; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 5px; }
+
+        /* SLIDERS */
+        .video-slider-container { width: 100%; position: relative; padding-bottom: 20px; }
+        .video-slides-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; gap: 12px; padding: 0 8%; }
+        .video-slide-item { min-width: 85%; scroll-snap-align: center; flex-shrink: 0; }
+        .video-wrapper-rapi { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+        .video-wrapper-rapi iframe { width: 100%; height: 100%; border: 0; }
+
+        .section-label { padding: 25px 6% 15px; font-size: 13px; font-weight: 800; text-transform: uppercase; color: var(--slate-gray); letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
+        .section-label::after { content: ""; height: 2px; background: #e2e8f0; flex: 1; }
+        .custom-slider-container { width: 100%; height: 250px; position: relative; background: #eee; overflow: hidden; }
+        .slides-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 100%; scrollbar-width: none; }
+        .slide-item { min-width: 100%; height: 100%; scroll-snap-align: start; flex-shrink: 0; }
+        .slide-item img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .slider-dots { display: flex; justify-content: center; gap: 6px; padding: 10px 0; }
+        .s-dot { width: 6px; height: 6px; background: #cbd5e1; border-radius: 50%; transition: 0.3s; }
+        .s-dot.active { background: var(--honda-red); width: 18px; border-radius: 4px; }
+
+        /* CONTROLS */
+        .controls { position: sticky; top: 120px; z-index: 990; background: var(--bg-light); padding: 20px 0 10px; }
+        .search-box { padding: 0 6% 15px; }
+        .search-inner { background: var(--white); border-radius: 12px; display: flex; align-items: center; padding: 0 18px; border: 1px solid #e2e8f0; }
+        .search-inner input { width: 100%; border: none; padding: 14px 10px; outline: none; font-size: 14px; }
+        .tabs { display: flex; gap: 10px; overflow-x: auto; padding: 0 6% 15px; scrollbar-width: none; }
+        .tab-btn { padding: 10px 24px; border: 1px solid #e2e8f0; background: var(--white); border-radius: 8px; font-size: 12px; font-weight: 700; color: var(--slate-gray); white-space: nowrap; }
+        .tab-btn.active { background: var(--honda-red); color: var(--white); border-color: var(--honda-red); }
+
+        .trust-icons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 25px 4%; background: var(--dark-steel); }
+        .trust-item { text-align: center; color: white; display: flex; flex-direction: column; align-items: center; }
+        .trust-item i { font-size: 24px; margin-bottom: 10px; color: #fff; }
+        .trust-item span { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #cbd5e1; }
+
+        /* GRID & CARD */
+        .grid { display: grid; grid-template-columns: 1fr; gap: 30px; padding: 15px 6% 50px; }
+        .card { background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; position: relative; }
+        .gallery { position: relative; height: 260px; background: #fff; }
+        .gallery-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 100%; scrollbar-width: none; }
+        .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; scroll-snap-align: start; }
+        .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; }
+        .img-counter { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+
+        .card-info { padding: 24px; }
+        .motor-name { font-size: 20px; font-weight: 800; color: var(--dark-steel); }
+        .new-price { font-size: 18px; font-weight: 600; color: var(--honda-red); display: block; margin-bottom: 12px; }
+
+        details { background: #f1f5f9; border-radius: 10px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+        summary { padding: 12px 15px; font-size: 12px; font-weight: 700; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 10px; }
+        .spec-container { padding: 0 15px 15px; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+        .spec-item { display: grid; grid-template-columns: 80px 10px 1fr; font-size: 11px; color: var(--slate-gray); }
+
+        .wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #128c7e; color: #fff; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 700; transition: 0.3s; }
+        .wa-btn:active { transform: scale(0.95); background: #075e54; }
+
+        footer { background: var(--white); padding: 50px 6% 30px; border-top: 1px solid #e2e8f0; text-align: center; }
+        .social-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .social-icon { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        .fb { background: #1877F2; } .ig { background: linear-gradient(45deg, #f09433 0%, #bc1888 100%); }
+
+        #zoomModal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 20px; }
+        
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        @keyframes shine { 0% { background-position: -200%; } 100% { background-position: 200%; } }
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    </style>
+</head>
+<body>
+
+    <div class="top-info-bar">
+        <div class="live-date-time"><span id="top-date"></span> | <span id="top-clock" style="color: #fbbf24;"></span></div>
+    </div>
+
+    <nav class="navbar">
+        <img src="logo.jpg" class="logo-img" onerror="this.src='https://via.placeholder.com/150x40?text=honda'">
+        <div class="brand-name">Maju Jaya Abadi</div>
+    </nav>
+
+<div class="running-text-container">
+    <div class="running-text">
+        Selamat Datang di Website Resmi Honda Maju Jaya Abadi Ngawi — Dapatkan Promo Spesial Bulan Ini — Satu Hati Melayani Anda — 
+    </div>
+</div>
+
+    <div class="hero">
+        <h1>Pusat Motor honda <br><span class="dealer-name-animate">Maju Jaya Abadi Ngawi</span></h1>
+        <p>Layanan profesional dengan pilihan unit terlengkap di Ngawi.</p>
+    </div>
+    <div style="background: #fff; padding: 15px 6%; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: var(--dark-steel);">
+        <i class="fas fa-clock" style="color: var(--honda-red);"></i> JAM OPERASIONAL:
+    </div>
+    <div style="display: flex; gap: 10px; font-size: 10px; color: var(--slate-gray); font-weight: 600;">
+        <span>Sen - Jum: <b style="color: var(--dark-steel);">08.00 - 17.00</b></span>
+        <span style="color: #e2e8f0;">|</span>
+        <span>Sab: <b style="color: var(--dark-steel);">09.00 - 17.00</b></span>
+        <span style="color: #e2e8f0;">|</span>
+        <span style="color: var(--honda-red);">Minggu: Tutup</span>
+         <div id="top-status-badge"></div>
+    </div>
+</div>
+
+   
+    <div class="trust-icons">
+        <div class="trust-item"><i class="fas fa-certificate"></i><span>Dealer Resmi</span></div>
+        <div class="trust-item"><i class="fas fa-tools"></i><span>Bengkel Resmi</span></div>
+        <div class="trust-item"><i class="fas fa-percentage"></i><span>Promo Terbaik</span></div>
+    </div>
+
+    <div class="section-label">Promo Bulan Ini :</div>
+    <div class="custom-slider-container">
+        <div class="slides-scroll" id="promoScroll" onscroll="syncDots('promoScroll', 'promoDots')">
+            <div class="slide-item"><img src="promo1.jpg" onerror="this.src='https://via.placeholder.com/800x400?text=Promo+1'"></div>
+            <div class="slide-item"><img src="promo2.jpg" onerror="this.src='https://via.placeholder.com/800x400?text=Promo+2'"></div>
+            <div class="slide-item"><img src="promo3.jpg" onerror="this.src='https://via.placeholder.com/800x400?text=Promo+3'"></div>
+            <div class="slide-item"><img src="promo4.jpg" onerror="this.src='https://via.placeholder.com/800x400?text=Promo+3'"></div>
+            <div class="slide-item"><img src="promo5.jpg" onerror="this.src='https://via.placeholder.com/800x400?text=Promo+3'"></div>
+        </div>
+        <div class="slider-dots" id="promoDots">
+            <div class="s-dot active"></div><div class="s-dot"></div><div class="s-dot"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="search-box">
+            <div class="search-inner">
+                <i class="fas fa-search" style="color:#cbd5e1;"></i>
+                <input type="text" id="mainSearch" placeholder="Cari tipe motor..." onkeyup="doSearch()">
+            </div>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="doFilter('promo', this)">🔥 Promo</button>
+            <button class="tab-btn" onclick="doFilter('matic', this)">MATIC</button>
+            <button class="tab-btn" onclick="doFilter('sport', this)">SPORT</button>
+            <button class="tab-btn" onclick="doFilter('cub', this)">CUB</button>
+            <button class="tab-btn" onclick="doFilter('ev', this)">Motor Elektrik</button>
+        </div>        
+    </div>
+
+    <div id="loading" style="text-align: center; padding: 50px;"><i class="fas fa-circle-notch fa-spin fa-2x" style="color: var(--honda-red);"></i></div>
+    <div class="grid" id="mainContainer"></div>
+
+    <div class="section-label">Galeri Video :</div>
+    <div class="video-slider-container">  
+        <div class="video-slides-scroll" id="videoScroll" onscroll="syncDots('videoScroll', 'videoDots')">
+            <div class="video-slide-item">
+                <div class="video-wrapper-rapi">
+                    <iframe src="https://www.youtube-nocookie.com/embed/zXpXbKTvKac" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="video-slide-item">
+                <div class="video-wrapper-rapi">
+                    <iframe src="https://www.youtube-nocookie.com/embed/17S0P6iXF-M" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div> 
+        <div class="slider-dots" id="videoDots"><div class="s-dot active"></div><div class="s-dot"></div></div>
+    </div>
+
+    <div class="section-label">Tentang Kami :</div>
+    <div class="custom-slider-container">
+        <div class="slides-scroll" id="aboutScroll" onscroll="syncDots('aboutScroll', 'aboutDots')">
+            <div class="slide-item"><img src="foto1.jpg" onclick="openZoom(this.src)" onerror="this.src='https://via.placeholder.com/800x400?text=Showroom+1'"></div>
+            <div class="slide-item"><img src="foto2.jpg" onclick="openZoom(this.src)" onerror="this.src='https://via.placeholder.com/800x400?text=Showroom+2'"></div>
+            <div class="slide-item"><img src="foto3.jpg" onclick="openZoom(this.src)" onerror="this.src='https://via.placeholder.com/800x400?text=Showroom+3'"></div>
+            <div class="slide-item"><img src="foto4.jpg" onclick="openZoom(this.src)" onerror="this.src='https://via.placeholder.com/800x400?text=Showroom+3'"></div>
+            <div class="slide-item"><img src="foto5.jpg" onclick="openZoom(this.src)" onerror="this.src='https://via.placeholder.com/800x400?text=Showroom+3'"></div>
+        </div>
+        <div class="slider-dots" id="aboutDots"><div class="s-dot active"></div><div class="s-dot"></div></div>
+    </div>
+
+    <div class="section-label">Lokasi Dealer :</div>
+    <div class="map-container">
+        <div class="map-wrapper">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.123!2d111.444!3d-7.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMjQnMDAuMCJTIDExMcKwMjYnNDAuMCJF!5e0!3m2!1sid!2sid!4v1640000000000!5m2!1sid!2sid" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="#" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon ig"><i class="fab fa-instagram"></i></a>
+        </div>
+        
+        <div style="font-weight: 800; color: var(--dark-steel); text-transform: uppercase; font-size: 13px; margin-bottom: 5px;">
+            honda Maju Jaya Abadi Ngawi
+        </div>
+        
+        <div style="font-size: 11px; color: var(--slate-gray); margin-bottom: 15px;">
+            © 2026 All Rights Reserved
+        </div>
+
+        <div style="font-size: 10px; color: var(--slate-gray); border-top: 1px solid #eee; padding-top: 15px; letter-spacing: 0.5px;">
+            Handcrafted with <i class="fas fa-heart" style="color: var(--honda-red); font-size: 9px;"></i> by 
+            <a href="https://wa.me/6285725493220" style="text-decoration: none; color: var(--honda-red); font-weight: 700;">IT Maju Jaya Abadi</a>
+        </div>
+    </footer>
+
+
+    <div id="zoomModal" onclick="this.style.display='none'"><img id="zoomImg" style="max-width:100%; max-height:90vh; border-radius:8px; object-fit:contain;"></div>
+
+<script>
+    const CONFIG = { API_URL: "https://sheetdb.io/api/v1/30v4p21ubzasr", WA_PHONE: "6285725493220" };
+    let rawData = [];
+
+        function updateRealTimeInfo() {
+        const now = new Date();
+        const day = now.getDay(); // 0 = Minggu, 1 = Senin, ..., 6 = Sabtu
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const currentTime = hours + (minutes / 60); // Konversi jam ke desimal untuk pengecekan mudah
+
+        let isOpen = false;
+
+        // Logika Jam Operasional Baru:
+        if (day >= 1 && day <= 5) { 
+            // Senin - Jumat: 08.00 - 17.00
+            if (currentTime >= 8 && currentTime < 17) isOpen = true;
+        } else if (day === 6) {
+            // Sabtu: 09.00 - 17.00
+            if (currentTime >= 9 && currentTime < 17) isOpen = true;
+        } 
+        // Minggu (day === 0) otomatis isOpen = false karena tidak masuk kondisi di atas
+
+        document.getElementById('top-date').innerText = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+        document.getElementById('top-clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+        
+        document.getElementById('top-status-badge').innerHTML = isOpen ? 
+            `<span class="dot-status dot-open"></span> BUKA` : `<span class="dot-status dot-closed"></span> TUTUP`;
+    }
+
+
+    function syncDots(scrollId, dotsId) {
+        const scroll = document.getElementById(scrollId);
+        const dots = document.getElementById(dotsId)?.children;
+        if(!scroll || !dots) return;
+        const idx = Math.round(scroll.scrollLeft / scroll.offsetWidth);
+        for(let i=0; i<dots.length; i++) if(dots[i]) dots[i].classList.toggle('active', i === idx);
+    }
+
+    function startAutoSlide(scrollId, interval) {
+        const scroll = document.getElementById(scrollId);
+        if(!scroll) return;
+        setInterval(() => {
+            const total = scroll.children.length;
+            const current = Math.round(scroll.scrollLeft / scroll.offsetWidth);
+            const next = (current + 1) % total;
+            scroll.scrollTo({ left: next * scroll.offsetWidth, behavior: 'smooth' });
+        }, interval);
+    }
+
+    async function fetchMaster() {
+        try {
+            const res = await fetch(CONFIG.API_URL);
+            rawData = await res.json();
+            document.getElementById('loading').style.display = 'none';
+            renderMaster('promo');
+            startAutoSlide('promoScroll', 5000);
+            startAutoSlide('videoScroll', 8000);
+            startAutoSlide('aboutScroll', 7000);
+        } catch (e) { document.getElementById('loading').innerText = "Gagal memuat data."; }
+    }
+
+    function renderMaster(filter = 'promo', query = '') {
+        const container = document.getElementById('mainContainer');
+        container.innerHTML = "";
+        const data = rawData.filter(m => {
+            if (query !== "") return m.nama?.toLowerCase().includes(query.toLowerCase());
+            if (filter === 'promo') return m.promo && m.promo.trim() !== "";
+            return m.cat?.toLowerCase().includes(filter.toLowerCase());
+        });
+
+        data.forEach((m, idx) => {
+            const imgs = [m.img, m.img1, m.img2, m.img3, m.img4, m.img5].filter(p => p && p.trim() !== "");
+            const status = m.stock?.toLowerCase().trim();
+            const badgeClass = status === 'ready' ? 'stok-ready' : (status === 'inden' ? 'stok-inden' : 'stok-kosong');
+            const promoTag = (m.promo && m.promo.trim() !== "") ? `<div class="promo-badge"><i class="fas fa-fire"></i> ${m.promo}</div>` : "";
+
+            container.innerHTML += `
+            <div class="card">
+                <div class="gallery">
+                    ${promoTag}
+                    <div class="img-counter" id="counter-${idx}">1 / ${imgs.length}</div>
+                    <div class="gallery-scroll" onscroll="syncDots('gallery-scroll', 'counter-${idx}')">
+                        ${imgs.map(p => `<div class="slide"><img src="${p}" onclick="openZoom(this.src)"></div>`).join('')}
+                    </div>
+                </div>
+                <div class="card-info">
+                    <div class="stok-badge ${badgeClass}">${m.stock || 'Cek Stok'}</div>
+                    <h3 class="motor-name">${m.nama}</h3>
+                    <span class="new-price">${m.harga ? "Rp " + parseInt(m.harga.replace(/[^0-9]/g, "")).toLocaleString('id-ID') : '-'}</span>
+                    <span style="background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">
+    TYPE: ${m.type || '-'}
+</span>
+
+                    <details>
+                        <summary>Spesifikasi Produk</summary>
+                        <div class="spec-container">
+                            <div class="spec-item"><span class="spec-label">Mesin</span><span>:</span><span>${m.mesin || '-'}</span></div>
+                            <div class="spec-item"><span class="spec-label">Rangka</span><span>:</span><span>${m.rangka || '-'}</span></div>
+                            <div class="spec-item"><span class="spec-label">Dimensi</span><span>:</span><span>${m.dimensi || '-'}</span></div>
+                            <div class="spec-item"><span class="spec-label">Kelistrikan</span><span>:</span><span>${m.kelistrikan || '-'}</span></div>
+                        </div>
+                    </details>
+                    <a href="https://wa.me/${CONFIG.WA_PHONE}?text=Halo Sales Maju Jaya Abadi, saya ingin tanya unit ${m.nama}" class="wa-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> TANYA SALES
+                    </a>
+                </div>
+            </div>`;
+        });
+    }
+
+    function openZoom(src) { document.getElementById('zoomImg').src = src; document.getElementById('zoomModal').style.display = 'flex'; }
+    const doSearch = () => renderMaster('promo', document.getElementById('mainSearch').value);
+    const doFilter = (c, b) => {
+        document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        renderMaster(c);
+    };
+
+    updateRealTimeInfo();
+    setInterval(updateRealTimeInfo, 1000);
+    fetchMaster();
+</script>
+</body>
+</html>
